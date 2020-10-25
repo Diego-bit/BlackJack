@@ -9,7 +9,7 @@ let puntosJugador = 0,
 
 const btnPedir = document.querySelector("#btnPedir");
 const btnDetener = document.querySelector("#btnDetener");
-
+const btnNuevo = document.querySelector("#btnNuevo");
 const divCartaJugador = document.querySelector("#jugador-cartas");
 const divCartaComputadora = document.querySelector("#computadora-cartas");
 const puntosHTML = document.querySelectorAll("small");
@@ -40,8 +40,7 @@ const pedirCarta = () => {
     throw "No hay cartas en el deck";
   }
   const carta = deck.pop();
-  console.log(deck);
-  console.log(carta); // carta debe ser la baraja
+ // carta debe ser la baraja
   return carta;
 };
 
@@ -73,6 +72,18 @@ const turnoComputadora = (puntosMinimos) => {
       break;
     }
   } while (puntosComputadora < puntosMinimos && puntosMinimos <= 21);
+
+  setTimeout(() => {
+    if (puntosComputadora == puntosMinimos) {
+      alert("Nadie Gana");
+    } else if (puntosMinimos > 21) {
+      alert("Computadora Gana");
+    } else if (puntosComputadora > 21) {
+      alert("Jugador Gana");
+    } else {
+      alert("Computadora Gana");
+    }
+  }, 100);
 };
 
 // eventos
@@ -98,6 +109,7 @@ btnPedir.addEventListener("click", () => {
     turnoComputadora(puntosJugador);
   } else if (puntosJugador == 21) {
     console.warn("ganaste");
+    btnDetener.disabled = true;
     btnPedir.disabled = true;
   }
 });
@@ -107,4 +119,21 @@ btnDetener.addEventListener("click", () => {
   btnDetener.disabled = true;
 
   turnoComputadora(puntosJugador);
+});
+
+btnNuevo.addEventListener("click", () => {
+  btnPedir.disabled = false;
+  btnDetener.disabled = false;
+  deck = [];
+  deck = crearDeck();
+
+  puntosJugador = 0;
+  puntosComputadora = 0;
+  puntosHTML[0].innerText = 0;
+  puntosHTML[1].innerText = 0;
+
+  divCartaComputadora.innerHTML = "";
+  divCartaJugador.innerHTML = "";
+
+  console.clear();
 });
